@@ -44,7 +44,9 @@
             $('#get').click(function () {
                 contract.methods.balanceOf($('#address').val()).call().then(function (bal) {
                     console.log(bal);
-                    $('#balanceOf').html(bal);
+                    var num1= 0;
+                    num1 = bal/100000000;
+                    $('#balanceOf').html(num1);
                     contract.methods.stakeCount($('#address').val()).call().then(function (sc) {
                         console.log(sc);
                         $('#stakeCount').html(sc);
