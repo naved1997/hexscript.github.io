@@ -21,6 +21,9 @@
 
         <p id=>3-Stake List</p>
         <p id="stakeLists"></p>
+        <div id="mydiv">
+
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
@@ -43,10 +46,9 @@
 
             $('#get').click(function () {
                 contract.methods.balanceOf($('#address').val()).call().then(function (bal) {
-                    console.log(bal);
-                    var num1= 0;
-                    num1 = bal/100000000;
-                    $('#balanceOf').html(num1);
+                    var bl= 0;
+                    bl = bal/100000000;
+                    $('#balanceOf').html(bl);
                     contract.methods.stakeCount($('#address').val()).call().then(function (sc) {
                         console.log(sc);
                         $('#stakeCount').html(sc);
@@ -54,15 +56,20 @@
                         add = ($('#address').val());
                         var num = 0;
                         num = sc-1;
-                        contract.methods.stakeLists(add, num).call().then(function(tx)
-                        {
-                            console.log(tx);
-                            str = JSON.stringify(tx);
-                            str = JSON.stringify(tx, null, 4);
-                            console.log(str);
-                            $('#stakeLists').html(str);
-                            alert(str);
-                        })
+                        var l=[];
+                        for(var i=0;i<sc;i++) {
+                            contract.methods.stakeLists(add, i).call().then(function(tx)
+                            {
+                                str = JSON.stringify(tx, null, 4);
+                                l.push(tx);
+                                // $('#stakeLists').html(str);
+                                // alert(str);
+                                document.getElementById("mydiv").innerHTML += "<div  id='"+i+"_holder' class='holder'><span class='charValue'>"+str+"</span></br></div>";
+                            })
+                        }
+                        console.log(l);
+                        var ll= JSON.stringify(l, null, 4);
+                        // $('#stakeLists').html(ll);
                     })
                 })
             })
@@ -70,7 +77,9 @@
             $('#balanceOf').click(function () {
                 contract.methods.balanceOf($('#address').val()).call().then(function (tx) {
                     console.log(tx);
-                    $('#balanceOf').html(tx);
+                    var bal = 0
+                    bal = tx/100000000;
+                    $('#balanceOf').html(bal);
                 })
             })
 
